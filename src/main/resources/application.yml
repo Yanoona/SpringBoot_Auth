@@ -1,0 +1,62 @@
+#启动端口
+server:
+  port: 8080
+spring:
+  #SpringBoot热部署，同时需要开启idea自动编译。
+  #具体如下： 1）File->Settings->Buide、execution->Compiler,选中Build Project automatically
+  #          2）使用快捷键Ctrl+Shift+Alt+/,选择弹框中的Registry,勾上 Compiler autoMake allow when app running
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+  application:
+    name: Medical_Big_Data
+  #JPA配置
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  #数据库
+  datasource:
+    dynamic:
+      #Hikari连接池配置
+      hikari:
+        idle-timeout: 30000
+        pool-name: HikariCP
+        max-lifetime: 1800000
+        connection-timeout: 30000
+        connection-test-query: select 1
+        min-idle: 5
+        max-pool-size: 20
+      primary: base
+      datasource:
+        base:
+          username: root
+          password: root
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/febs_cloud_base2?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+  #前端模板引擎
+  thymeleaf:
+    cache: false
+    suffix: .html
+    prefix: classpath:/templates/
+mybatis-plus:
+  #指定MyBatis XML文件路径
+  mapper-locations: classpath:mapper/*/*.xml
+  #指定别名扫描路径
+  type-aliases-package: com.cblz.medical_big_data.entity
+  configuration:
+    #指定为null，否则再插入空值时会报“无效的列类型”错误
+    jdbc-type-for-null: null
